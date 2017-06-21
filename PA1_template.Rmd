@@ -1,9 +1,7 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 author: "Stijn Servaes"
-output: 
-  html_document:
-    keep_md: true
+date: "20 July 2017"
 ---
 
 ```{r setup, include=FALSE}
