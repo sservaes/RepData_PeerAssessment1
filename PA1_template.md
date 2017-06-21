@@ -1,15 +1,7 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-author: "Stijn Servaes"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
+Stijn Servaes  
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(lattice)
-```
+
 
 ## ABOUT
 This was the first assignment of the Reproducible Research Course in Coursera's Data Science specialization.
@@ -34,7 +26,8 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 
 Download, unzip and load data into a dataframe called `activity`.
 
-```{r activity}
+
+```r
 setwd("/Users/sservaes/datasciencecoursera/RepData_PeerAssessment1")
 if(!file.exists("activity.zip")) {
         temp <- tempfile()
@@ -51,14 +44,20 @@ activity <- read.csv("activity.csv", colClasses = c("integer", "Date", "integer"
 * Create a histogram
 * Calculate the mean and median.
 
-```{r mean steps}
+
+```r
 steps_day <- aggregate(steps ~ date, activity, FUN = sum)
 hist(steps_day$steps, main = paste("Total Steps Each Day"), col = "red", xlab = "Number of Steps")
+```
+
+![](PA1_template_files/figure-html/mean steps-1.png)<!-- -->
+
+```r
 mean_steps <- mean(steps_day$steps, na.rm = T)
 median_steps <- median(steps_day$steps, na.rm = T)
 ```
 
-The mean is `r mean_steps` and the median is `r median_steps`.
+The mean is 1.0766189\times 10^{4} and the median is 10765.
 
 ## What is the average daily activity pattern?
 
@@ -66,9 +65,15 @@ The mean is `r mean_steps` and the median is `r median_steps`.
 * Plot the average amount of steps per day by interval
 * Find the interval with the most average steps
 
-```{r steps interval}
+
+```r
 steps_interval <- aggregate(steps ~ interval, activity, FUN = mean)
 plot(steps_interval$interval, steps_interval$steps, main = "Average Number of Steps per Day by Interval", xlab = "Interval", ylab = "Steps", type = "l")
+```
+
+![](PA1_template_files/figure-html/steps interval-1.png)<!-- -->
+
+```r
 max_interval <- steps_interval[which.max(steps_interval$steps),1]
 ```
 
@@ -77,57 +82,74 @@ The 5-minute interval with the most average steps, taken over all days, is `max_
 ## Imputing missing values
 Calculate and impute missing data by inserting the average for each day.
 
-```{r imputing missing values}
+
+```r
 missing_values <- !complete.cases(activity)
 sum(missing_values)
+```
+
+```
+## [1] 2304
+```
+
+```r
 imputed_activity <- transform(activity, steps = ifelse(is.na(activity$steps), steps_interval$steps[match(activity$interval, steps_interval$interval)], activity$steps))
 ```
 
 Reduce the values of day 1 to zero, as it was the first day, and the following day only had 126 steps.
 
-``` {r imputing missing values 2}
+
+```r
 imputed_activity[as.character(imputed_activity$date) == "2012-10-01", 1] <- 0
 ```
 
 * Recreate a histogram displaying the total steps for each day
 * Recalculate the mean and median for the imputed dataset.
 
-``` {r recount}
+
+```r
 imputed_interval <- aggregate(steps ~ date, imputed_activity, FUN = sum)
 hist(imputed_interval$steps, main = paste("Total Steps Each Day"), col = "red", xlab = "Number of Steps")
 hist(steps_day$steps, main = paste("Total Steps Each Day"), col = "blue", xlab = "Number of Steps", add = TRUE)
 legend("topright", c("Imputed", "Non-imputed"), col=c("red", "blue"), lwd=10)
+```
+
+![](PA1_template_files/figure-html/recount-1.png)<!-- -->
+
+```r
 mean_imputed <- mean(imputed_interval$steps)
 median_imputed <- median(imputed_interval$steps)
 ```
 
-The imputed mean is `r mean_imputed`.  
-The imputed median is `r median_imputed`.
+The imputed mean is 1.0589694\times 10^{4}.  
+The imputed median is 1.0766189\times 10^{4}.
 
 ## Calculate differences between the original and the imputed dataset
 Calculate the difference in the mean, median and total amount of steps between the original dataset and the imputed dataset.
 
-``` {r difference}
+
+```r
 mean_diff <- mean_imputed - mean_steps
 median_diff <- median_imputed - median_steps
 total_diff <- sum(imputed_interval$steps) - sum(steps_day$steps)
 ```
 
-The original mean is `r mean_steps`.  
-The imputed mean is `r mean_imputed`.  
-The difference between the original and imputed mean is `r mean_diff`.  
+The original mean is 1.0766189\times 10^{4}.  
+The imputed mean is 1.0589694\times 10^{4}.  
+The difference between the original and imputed mean is -176.4948964.  
 
-The original median is `r median_steps`.  
-The imputed median is `r median_imputed`.  
-The difference between the original and imputed median is `r median_diff`.  
+The original median is 10765.  
+The imputed median is 1.0766189\times 10^{4}.  
+The difference between the original and imputed median is 1.1886792.  
 
-The difference between the original and imputed total sum of steps is `r total_diff`.  
+The difference between the original and imputed total sum of steps is 7.5363321\times 10^{4}.  
 
 ## Calculate differences in activity patterns between weekdays and weekends
 Add a factor variable `dayofweek` to `imputed_activity` that determines whether the date is a `Weekday` or `Weekend`.
 Create a latice plot to compare the difference in activity pattern between weekday or weekend.
 
-``` {r weekdays and weekends}
+
+```r
 weekend_list <- c("Saturday", "Sunday")
 
 imputed_activity$dayofweek <- as.factor(ifelse(weekdays(imputed_activity$date) %in% weekend_list, "Weekend", "Weekday"))
@@ -135,5 +157,7 @@ imputed_activity$dayofweek <- as.factor(ifelse(weekdays(imputed_activity$date) %
 steps_interval_dow <- aggregate(steps ~ interval + dayofweek, imputed_activity, FUN = mean)
 xyplot(steps_interval_dow$steps ~ steps_interval_dow$interval|steps_interval_dow$dayofweek, type="l", layout=c(1,2), xlab = "Interval", ylab = "Steps")
 ```
+
+![](PA1_template_files/figure-html/weekdays and weekends-1.png)<!-- -->
 
 There is a higher initial peek in the activity pattern of the weekday, however there is more overall activity during the weekend.
