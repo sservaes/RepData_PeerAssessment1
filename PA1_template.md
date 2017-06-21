@@ -1,7 +1,12 @@
 # Reproducible Research: Peer Assessment 1
 Stijn Servaes  
+20 July 2017  
 
 
+```r
+knitr::opts_chunk$set(echo = TRUE)
+library(lattice)
+```
 
 ## ABOUT
 This was the first assignment of the Reproducible Research Course in Coursera's Data Science specialization.

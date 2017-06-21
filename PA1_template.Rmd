@@ -2,9 +2,12 @@
 title: "Reproducible Research: Peer Assessment 1"
 author: "Stijn Servaes"
 date: "20 July 2017"
+output: 
+  html_document:
+    keep_md: true
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
 library(lattice)
 ```
