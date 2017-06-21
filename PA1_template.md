@@ -55,7 +55,7 @@ steps_day <- aggregate(steps ~ date, activity, FUN = sum)
 hist(steps_day$steps, main = paste("Total Steps Each Day"), col = "red", xlab = "Number of Steps")
 ```
 
-![](PA1_template_files/figure-html/mean steps-1.png)<!-- -->
+![](PA1_template_files/figure-html/mean_steps-1.png)<!-- -->
 
 ```r
 mean_steps <- mean(steps_day$steps, na.rm = T)
@@ -163,6 +163,6 @@ steps_interval_dow <- aggregate(steps ~ interval + dayofweek, imputed_activity, 
 xyplot(steps_interval_dow$steps ~ steps_interval_dow$interval|steps_interval_dow$dayofweek, type="l", layout=c(1,2), xlab = "Interval", ylab = "Steps")
 ```
 
-![](PA1_template_files/figure-html/weekdays and weekends-1.png)<!-- -->
+![](PA1_template_files/figure-html/weekdays_and_weekends-1.png)<!-- -->
 
 There is a higher initial peek in the activity pattern of the weekday, however there is more overall activity during the weekend.

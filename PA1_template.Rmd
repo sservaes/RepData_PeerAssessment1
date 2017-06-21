@@ -52,7 +52,7 @@ activity <- read.csv("activity.csv", colClasses = c("integer", "Date", "integer"
 * Create a histogram
 * Calculate the mean and median.
 
-```{r mean steps}
+```{r mean_steps}
 steps_day <- aggregate(steps ~ date, activity, FUN = sum)
 hist(steps_day$steps, main = paste("Total Steps Each Day"), col = "red", xlab = "Number of Steps")
 mean_steps <- mean(steps_day$steps, na.rm = T)
@@ -78,7 +78,7 @@ The 5-minute interval with the most average steps, taken over all days, is `max_
 ## Imputing missing values
 Calculate and impute missing data by inserting the average for each day.
 
-```{r imputing missing values}
+```{r imputing_missing_values}
 missing_values <- !complete.cases(activity)
 sum(missing_values)
 imputed_activity <- transform(activity, steps = ifelse(is.na(activity$steps), steps_interval$steps[match(activity$interval, steps_interval$interval)], activity$steps))
@@ -86,7 +86,7 @@ imputed_activity <- transform(activity, steps = ifelse(is.na(activity$steps), st
 
 Reduce the values of day 1 to zero, as it was the first day, and the following day only had 126 steps.
 
-``` {r imputing missing values 2}
+``` {r imputing_missing_values_2}
 imputed_activity[as.character(imputed_activity$date) == "2012-10-01", 1] <- 0
 ```
 
@@ -128,7 +128,7 @@ The difference between the original and imputed total sum of steps is `r total_d
 Add a factor variable `dayofweek` to `imputed_activity` that determines whether the date is a `Weekday` or `Weekend`.
 Create a latice plot to compare the difference in activity pattern between weekday or weekend.
 
-``` {r weekdays and weekends}
+``` {r weekdays_and_weekends}
 weekend_list <- c("Saturday", "Sunday")
 
 imputed_activity$dayofweek <- as.factor(ifelse(weekdays(imputed_activity$date) %in% weekend_list, "Weekend", "Weekday"))
