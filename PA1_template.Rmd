@@ -67,7 +67,7 @@ The mean is `r mean_steps` and the median is `r median_steps`.
 * Plot the average amount of steps per day by interval
 * Find the interval with the most average steps
 
-```{r steps interval}
+```{r steps_interval}
 steps_interval <- aggregate(steps ~ interval, activity, FUN = mean)
 plot(steps_interval$interval, steps_interval$steps, main = "Average Number of Steps per Day by Interval", xlab = "Interval", ylab = "Steps", type = "l")
 max_interval <- steps_interval[which.max(steps_interval$steps),1]

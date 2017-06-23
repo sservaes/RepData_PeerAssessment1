@@ -76,7 +76,7 @@ steps_interval <- aggregate(steps ~ interval, activity, FUN = mean)
 plot(steps_interval$interval, steps_interval$steps, main = "Average Number of Steps per Day by Interval", xlab = "Interval", ylab = "Steps", type = "l")
 ```
 
-![](PA1_template_files/figure-html/steps interval-1.png)<!-- -->
+![](PA1_template_files/figure-html/steps_interval-1.png)<!-- -->
 
 ```r
 max_interval <- steps_interval[which.max(steps_interval$steps),1]
