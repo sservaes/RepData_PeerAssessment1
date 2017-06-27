@@ -73,7 +73,7 @@ plot(steps_interval$interval, steps_interval$steps, main = "Average Number of St
 max_interval <- steps_interval[which.max(steps_interval$steps),1]
 ```
 
-The 5-minute interval with the most average steps, taken over all days, is `max_interval`.
+The 5-minute interval with the most average steps, taken over all days, is `r max_interval`.
 
 ## Imputing missing values
 Calculate and impute missing data by inserting the average for each day.
